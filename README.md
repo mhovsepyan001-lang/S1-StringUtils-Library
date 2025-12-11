@@ -8,93 +8,54 @@ In C, these operations require manual memory management, pointer handling, and c
 
 ---
 
-## **Features**
+# S1-StringUtils-Library
 
-* `split()` – Split a string by a delimiter
-* `split_free()` – Free memory allocated by split
-* `join()` – Join an array of strings into one
-* `trim()` – Remove leading and trailing whitespace
-* `upper()` – Convert all characters to uppercase
-* `string_buffer` – Dynamic resizable string builder
+A C library providing essential string manipulation functions such as `append`, `trim`, `join`, and `duplicate`.  
+The library simplifies working with strings in C without manual memory handling.
 
----
+## Features
 
-## **Project Structure**
+- **append:** Combine two strings into one.  
+- **trim:** Remove leading and trailing spaces.  
+- **join:** Merge multiple strings with a separator.  
+- **duplicate:** Safely create a copy of a string.  
+- **length:** Calculate the length of a string.
 
-```
-S1-StringUtils-Library/
-│
-├── stringutils.c
-├── stringutils.h
-├── demo.c
-└── README.md
-```
+## Getting Started
 
----
+### Prerequisites
+- C compiler (e.g., `gcc`)  
+- Make utility  
 
-## **Build Instructions**
+### Installation
+Clone the repository:
+```bash
+git clone https://github.com/mhovsepyan001-lang/S1-StringUtils-Library.git
+cd S1-StringUtils-Library
+Building and Running
+Build the demo program:
 
-### **Compile**
+bash
+make demo
+Run the demo:
 
-```
-gcc stringutils.c demo.c -o demo
-```
-
-### **Run**
-
-```
+bash
 ./demo
-```
+Run all tests:
 
----
+bash
+make run-test
+Usage
+Include the header file in your project:
 
-## **Demo Example (`demo.c`)**
-
-````markdown
-```c
-#include <stdio.h>
+c
 #include "stringutils.h"
+Then call the functions directly.
 
-int main() {
-    char **tokens = split("apple,banana,orange", ',');
-    for (int i = 0; tokens[i]; i++)
-        printf("%s\n", tokens[i]);
-    split_free(tokens);
+For full examples and demonstration, see demo.c.
 
-    char *arr[] = {"Hello", "World", "C", NULL};
-    char *joined = join(arr, " ");
-    printf("%s\n", joined);
-    free(joined);
-
-    char *trimmed = trim("   Hello World   ");
-    printf("%s\n", trimmed);
-    free(trimmed);
-
-    char *up = upper("hello");
-    printf("%s\n", up);
-    free(up);
-
-    string_buffer *sb = sb_create(16);
-    sb_append(sb, "Hello ");
-    sb_append(sb, "world!");
-    printf("%s\n", sb->data);
-    sb_free(sb);
-
-    return 0;
-}
-```
-````
-
----
-
-## **Usage in Another Project**
-
-```
-#include "stringutils.h"
-gcc main.c stringutils.c -o program
-```
-
----
+Contributing
+Contributions are welcome. Please create a pull request or issue for any suggestions or improvements.
 
 ## **Author**
 
