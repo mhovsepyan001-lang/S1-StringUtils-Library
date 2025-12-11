@@ -1,66 +1,204 @@
-# **S1-StringUtils-Library**
-
-This library solves the problem of missing high-level string utilities in the C programming language.
-In languages like Python, operations such as splitting, joining, trimming, and modifying strings are built-in and easy to use.
-In C, these operations require manual memory management, pointer handling, and careful allocation to avoid leaks or crashes.
-
-**S1-StringUtils-Library provides safe, ready-to-use C implementations** of common string functions, making it easier to perform these operations without rewriting them from scratch.
-
----
-
 # S1-StringUtils-Library
 
-A C library providing essential string manipulation functions such as `append`, `trim`, `join`, and `duplicate`.  
-The library simplifies working with strings in C without manual memory handling.
+A lightweight C library for common string operations including splitting, joining, trimming, case conversion, and dynamic string buffers.
 
 ## Features
 
-- **append:** Combine two strings into one.  
-- **trim:** Remove leading and trailing spaces.  
-- **join:** Merge multiple strings with a separator.  
-- **duplicate:** Safely create a copy of a string.  
-- **length:** Calculate the length of a string.
+| Function | Description |
+|----------|-------------|
+| `split(str, delimiter)` | Split a string by delimiter into an array |
+| `split_free(result)` | Free memory allocated by `split()` |
+| `join(strings, separator)` | Join an array of strings with a separator |
+| `trim(str)` | Remove leading and trailing whitespace |
+| `upper(str)` | Convert string to uppercase |
+| `sb_create(capacity)` | Create a dynamic string buffer |
+| `sb_append(sb, str)` | Append to string buffer |
+| `sb_free(sb)` | Free string buffer |
 
-## Getting Started
+## Requirements
 
-### Prerequisites
-- C compiler (e.g., `gcc`)  
-- Make utility  
+- C compiler (GCC, Clang, or MSVC)
+- Windows, Linux, or macOS
 
-### Installation
-Clone the repository:
-```bash
-git clone https://github.com/mhovsepyan001-lang/S1-StringUtils-Library.git
+## Installation
+
+### Windows
+
+1. Install MinGW (if you don't have a C compiler):
+```powershell
+winget install mingw
+```
+
+2. Clone the repository:
+```powershell
+git clone https://github.com/yourusername/S1-StringUtils-Library.git
 cd S1-StringUtils-Library
-Building and Running
-Build the demo program:
+```
 
-bash
-make demo
-Run the demo:
+### Linux/macOS
 
-bash
+```bash
+# Install gcc if needed
+# Ubuntu/Debian: sudo apt install gcc
+# macOS: xcode-select --install
+
+git clone https://github.com/yourusername/S1-StringUtils-Library.git
+cd S1-StringUtils-Library
+```
+
+## Building
+
+### Windows (PowerShell)
+
+**Build the demo:**
+```powershell
+gcc -Wall -Iinclude src/stringutils.c examples/main.c -o demo.exe
+```
+
+**Build the tests:**
+```powershell
+gcc -Wall -Iinclude src/stringutils.c tests/test_runner.c tests/test_split.c tests/test_trim.c tests/test_upper.c -o test_runner.exe
+```
+
+### Linux/macOS
+
+**Using Make:**
+```bash
+make          # Build both demo and test_runner
+make clean    # Remove built files
+```
+
+**Or manually:**
+```bash
+gcc -Wall -Iinclude src/stringutils.c examples/main.c -o demo
+gcc -Wall -Iinclude src/stringutils.c tests/test_runner.c tests/test_split.c tests/test_trim.c tests/test_upper.c -o test_runner
+```
+
+## Running
+
+### Run Demo
+
+```powershell
+# Windows
+.\demo.exe
+
+# Linux/macOS
 ./demo
-Run all tests:
+```
 
-bash
-make run-test
-Usage
-Include the header file in your project:
+**Expected output:**
+```
+Original: ' apple, banana , cherry '
 
-c
+Split & Trim:
+[0]: 'apple'
+[1]: 'banana'
+[2]: 'cherry'
+
+Joined: apple | banana | cherry
+
+Upper: 'hello world' -> 'HELLO WORLD'
+
+String Buffer: Hello, World!
+```
+
+### Run Tests
+
+```powershell
+# Windows
+.\test_runner.exe
+
+# Linux/macOS
+./test_runner
+```
+
+**Expected output:**
+```
+test_split: PASS
+test_split_empty: PASS
+test_split_null: PASS
+test_trim: PASS
+test_trim_no_space: PASS
+test_trim_all_space: PASS
+test_trim_null: PASS
+test_upper: PASS
+test_upper_mixed: PASS
+test_upper_null: PASS
+```
+
+## Usage Examples
+
+### Include in Your Project
+
+```c
 #include "stringutils.h"
-Then call the functions directly.
+```
 
-For full examples and demonstration, see demo.c.
+### Split a String
 
-Contributing
-Contributions are welcome. Please create a pull request or issue for any suggestions or improvements.
+```c
+char **parts = split("apple,banana,cherry", ',');
+for (int i = 0; parts[i]; i++) {
+    printf("%s\n", parts[i]);
+}
+split_free(parts);  // Don't forget to free!
+```
 
-## **Author**
+### Join Strings
 
-Meri Hovsepyan
-S1 Programming Course — 2025
+```c
+char *fruits[] = {"apple", "banana", "cherry", NULL};
+char *result = join(fruits, " - ");
+printf("%s\n", result);  // "apple - banana - cherry"
+free(result);
+```
 
+### Trim Whitespace
 
+```c
+char *trimmed = trim("   hello world   ");
+printf("'%s'\n", trimmed);  // "'hello world'"
+free(trimmed);
+```
 
+### Convert to Uppercase
+
+```c
+char *upper_str = upper("hello");
+printf("%s\n", upper_str);  // "HELLO"
+free(upper_str);
+```
+
+### Dynamic String Buffer
+
+```c
+string_buffer *sb = sb_create(16);
+sb_append(sb, "Hello");
+sb_append(sb, ", ");
+sb_append(sb, "World!");
+printf("%s\n", sb->data);  // "Hello, World!"
+sb_free(sb);
+```
+
+## Project Structure
+
+```
+S1-StringUtils-Library/
+├── include/
+│   └── stringutils.h      # Header file with function declarations
+├── src/
+│   └── stringutils.c      # Implementation
+├── examples/
+│   └── main.c             # Demo program
+├── tests/
+│   ├── test_runner.c      # Test entry point
+│   ├── test_split.c       # Split function tests
+│   ├── test_trim.c        # Trim function tests
+│   └── test_upper.c       # Upper function tests
+├── Makefile               # Build configuration
+└── README.md
+```
+
+## License
+
+MIT License - feel free to use in your projects.
